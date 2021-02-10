@@ -7,7 +7,7 @@ import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
-import { auth } from "./firebase/firebase.utils";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 //we want to store the state of our user in our app, so then the user logs in
 //whether google sign in or email and password, we want to store that state on the app state
 //so we can pass it into components that need it, because we want to access our current user object through our app
@@ -29,9 +29,25 @@ class App extends React.Component {
     //whenever somebody signs in/signs out, we want to be aware when authentic state has changed
     //without having to manually fetch
     //firebase gives us a method for this, that take the function, where the parameter is what the user state is
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user }) //user is a parameter that is a state.//the last user that was sign in without sign out
-      console.log(user)
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      // this.setState({ currentUser: user }) //user is a parameter that is a state.//the last user that was sign in without sign out
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth); //this function returns userRef;
+
+        userRef.onSnapshot(snapShot => {
+          //onSnapShot is similar to onAuthStateChanged
+          //check if snapshot has changed, returns snapshot/ listen for any changes of data
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          });
+          console.log(this.state)
+        });
+      } else {
+        this.setState({ currentUser: userAuth }); //currentUser:null
+      }
     })
   }
 

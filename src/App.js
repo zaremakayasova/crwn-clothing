@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
 
 import './App.css';
 
@@ -12,60 +13,52 @@ import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 //whether google sign in or email and password, we want to store that state on the app state
 //so we can pass it into components that need it, because we want to access our current user object through our app
 //so we convert our App to a class component
-
+import { setCurrentUser } from "./redux/user/user.actions";
 
 class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      currentUser: null
-    };
-  }
-
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    //whenever somebody signs in/signs out, we want to be aware when authentic state has changed
-    //without having to manually fetch
-    //firebase gives us a method for this, that take the function, where the parameter is what the user state is
+    //whenever somebody signs in/signs out, we want to be aware when authentic state has changed without having to manually fetch
+    //firebase gives us a method for this, that takes the function, where the parameter is what the user state is
+    //whenever we sign-in or sign-out this onAuthStateChanged will be called as it is listening for such events.
+    //Calling auth.onAuthStateChanged(...) returns another method firebase.unsubscribe() which if we call would close the channel or unsubscribe. 
+    //so when unsubscribeFromAuth() is called inside the componentWillUnmount,
+    //it now has the value of firebase.unsubscribe(), which executes, closing the session.
+    const { setCurrentUser } = this.props;
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      // this.setState({ currentUser: user }) //user is a parameter that is a state.//the last user that was sign in without sign out
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth); //this function returns userRef;
 
         userRef.onSnapshot(snapShot => {
-          //onSnapShot is similar to onAuthStateChanged
-          //check if snapshot has changed, returns snapshot/ listen for any changes of data
-          this.setState({
+          // checks if snapshot has changed/listens for any changes of data/ returns snapshot
+          //but also gets back the fist state of that data
+          setCurrentUser({ //whenever our user snapshot updates, we are setting the userReducer value with the new object
             currentUser: {
               id: snapShot.id,
               ...snapShot.data()
             }
           });
         });
+
       } else {
-        this.setState({ currentUser: userAuth }); //currentUser:null
+        setCurrentUser(userAuth); //if the user signs out we set currentUser:null
       }
     })
   }
 
   componentWillUnmount() {
-    this.unsubscribeFromAuth(); //this will close the subscription
+    this.unsubscribeFromAuth();
   }
 
-  //unsubscribeFromAuth is initialised as null
-  //unsubscribeFromAuth is reassigned to the return value of calling auth.onAuthStateChanged().
-  // this method returns another method: firebase.unsubscribe().
-  //so when unsubscribeFromAuth() is called inside the componentWillUnmount,
-  // it now has the value of firebase.unsubscribe(), which executes, closing the session.
 
 
   render() {
 
     return (
       <div>
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
@@ -74,8 +67,10 @@ class App extends React.Component {
       </div>
     );
   }
-
-
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+})
+
+export default connect(null, mapDispatchToProps)(App); //null because we dont need any state so props from the reducer

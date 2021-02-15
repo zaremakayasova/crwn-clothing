@@ -13,11 +13,13 @@ const config = {
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
-  //userAuth- object that we get back when we login
-  if (!userAuth) return;//if userAuth obj doesnt exist exit from this function; 
-  const userRef = firestore.doc(`users/${userAuth.uid}`);
+  //this function takes userAuth object that we get back from auth library when we login
+  //and store inside the db
+  if (!userAuth) return;//if userAuth obj doesn't exist exit from this function; 
+  const userRef = firestore.doc(`users/${userAuth.uid}`); //we check if this userAuth alreadt exists in the db
+                                                          //we are getting back document Reference object
 
-  const snapShot = await userRef.get();
+  const snapShot = await userRef.get(); //we are getting back document snapShot object
   if (!snapShot.exist) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
@@ -47,8 +49,8 @@ export const firestore = firebase.firestore();
 const provider = new firebase.auth.GoogleAuthProvider();
 //this gives us access to GoogleAuthProvider class from auth library;
 //it takes a couple of custom parameters using the CustomParameters method
-provider.setCustomParameters({ prompt: 'select_account' });
-//we want to always trigger the google popup whenever we use this GoogleAuthProvider for authentication and sign in
+provider.setCustomParameters({ prompt: "select_account" });
+//we want to trigger the google popup whenever we use this GoogleAuthProvider for authentication and sign in
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 export default firebase;

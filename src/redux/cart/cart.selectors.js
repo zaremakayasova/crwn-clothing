@@ -8,9 +8,14 @@ import { createSelector } from "reselect";
 const selectCart = state => state.cart; //input selector
 
 export const selectCartItems = createSelector(
-    [selectCart],
+    [selectCart], //first argument can be either an array of our input selectors
     cart => cart.cartItems //second argument is a function that will return value we want out of this selector
     //parameter of this function is output of input selector in the array
+);
+
+export const selectCartHidden = createSelector(
+    [selectCart],
+    cart => cart.hidden
 );
 
 export const selectCartItemsCount = createSelector(
@@ -19,4 +24,12 @@ export const selectCartItemsCount = createSelector(
         cartItems.reduce(
             (accumulatedQuantity, cartItem) =>
                 accumulatedQuantity + cartItem.quantity, 0)
+);
+
+export const selectCartTotal = createSelector(
+    [selectCartItems],
+    cartItems => cartItems.reduce(
+        (accumulatedQuantity, cartItem) =>
+            accumulatedQuantity + cartItem.quantity * cartItem.price, 0)
+
 );

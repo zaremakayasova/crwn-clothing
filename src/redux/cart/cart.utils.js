@@ -1,6 +1,8 @@
 //utility functions allow us to keep our files clean and
 //organize functions that we may need in multiple files in one lcoation
 
+import CartItem from "../../components/cart-item/cart-item.component";
+
 export const addItemToCart = (cartItems, cartItemToAdd) => {//cartItems-existing items, cartItemToAdd- items that we want to add
     const existingCartItem = cartItems.find(cartItem => //we get the fist item of the array based off the condition we pass in 
         cartItem.id === cartItemToAdd.id); //if its true, it will set the cartItem where this condition is true to existingCartItem, if it doenst=undefined
@@ -13,5 +15,16 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {//cartItems-existing
         );
     }
     //if cartItem is not found inside our array
-    return [...cartItems, { ...cartItemToAdd, quantity: 1}];
+    return [...cartItems, { ...cartItemToAdd, quantity: 1 }];
+};
+
+export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+    if (cartItemToRemove.quantity === 1) {
+        return cartItems.filter(cartItem => cartItem.id !== cartItemToRemove.id)
+    } else {
+        return (cartItems.map(cartItem =>
+            cartItem.id === cartItemToRemove.id ?
+                { ...cartItem, quantity: cartItem.quantity - 1 }
+                : cartItem));
+    }
 };

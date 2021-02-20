@@ -18,6 +18,11 @@ const cartReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 // cartItems: [...state.cartItems, action.payload] //first spreading the existing cart items(array values) and any additional values we add at the end
                 cartItems: addItemToCart(state.cartItems, action.payload)
+            };
+        case CartActionTypes.CLEAR_ITEM_FROM_CART:
+            return {
+                ...state,
+                cartItems: state.cartItems.filter(cartItem => cartItem.id !== action.payload.id)
             }
         default:
             return state;

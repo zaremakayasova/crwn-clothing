@@ -10,6 +10,7 @@ import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
 import CheckoutPage from "./pages/checkout/checkout.component";
+import ContactPage from "./pages/contact/contact.component";
 
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 //we want to store the state of our user in our app, so then the user logs in
@@ -68,6 +69,7 @@ class App extends React.Component {
           <Route path="/shop" component={ShopPage} />
           <Route exact path="/checkout" component={CheckoutPage} />
           <Route exact path="/signin" render={() => this.props.currentUser ? (<Redirect to="/" />) : (<SignInAndSignUpPage />)} />
+          <Route exact path="/contact" component={ContactPage} />
         </Switch>
       </div>
     );
@@ -85,7 +87,7 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App); 
+)(App);
 
 //Connect()- a higher-order function that returns a higher-order component.
 //Connect is called with the arguments you pass in. There are essentially two steps since it's a curried function and must be called twice.

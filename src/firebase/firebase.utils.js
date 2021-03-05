@@ -16,8 +16,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   //this function takes userAuth object that we get back from auth library when we login
   //and store inside the db
   if (!userAuth) return;//if userAuth obj doesn't exist exit from this function; 
-  const userRef = firestore.doc(`users/${userAuth.uid}`); //we check if this userAuth alreadt exists in the db
-                                                          //we are getting back document Reference object
+  const userRef = firestore.doc(`users/${userAuth.uid}`); //we check if this userAuth already exists in the db
+  //we are getting back document Reference object
 
   const snapShot = await userRef.get(); //we are getting back document snapShot object
   if (!snapShot.exist) {
@@ -39,6 +39,36 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 }
 //^this function allows us to take that user auth object that we got back
 //from auth library and then store inside the database
+
+export const addCollectionAndDocuments = async (collectionKey, objectToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  const batch = firestore.batch();
+  objectToAdd.forEach(obj => {
+    const newDocRef = collectionRef.doc(); //firebase gives new document reference in this collection and randomly generate an id for us
+    batch.set(newDocRef, obj);
+  });
+
+  return await batch.commit();
+};
+
+export const convertCollectionsSnapshotToMap = collections => { //function to convert the array to an object
+  const transformedCollection = collections.docs.map((doc) => { //.docs gives us querySnapshot array
+    const { title, items } = doc.data();
+
+    return {
+      routeName: encodeURI(title.toLowerCase()), //method comes with every JS render, takes a string and convert to Url readable version
+      id: doc.id,
+      title,
+      items
+    }
+  });
+
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {})
+};
 
 
 firebase.initializeApp(config);

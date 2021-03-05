@@ -37,20 +37,18 @@ class App extends React.Component {
         const userRef = await createUserProfileDocument(userAuth); //this function returns userRef;
 
         userRef.onSnapshot(snapShot => {
+          //fires whenever document snapshot object updates
           // checks if snapshot has changed/listens for any changes of data/ returns snapshot
           //but also gets back the fist state of that data
           setCurrentUser({ //whenever our user snapshot updates, we are setting the userReducer value with the new object
-            currentUser: {
-              id: snapShot.id,
-              ...snapShot.data()
-            }
+            id: snapShot.id,
+            ...snapShot.data()
           });
         });
 
-      } else {
-        setCurrentUser(userAuth); //if the user signs out we set currentUser:null
       }
-    })
+      setCurrentUser(userAuth); //if the user signs out we set currentUser:null
+    });
   }
 
   componentWillUnmount() {
@@ -78,7 +76,7 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({ //so we have access to this.props.currentUser
   currentUser: selectCurrentUser
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))

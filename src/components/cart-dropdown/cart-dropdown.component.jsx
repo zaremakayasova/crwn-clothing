@@ -67,6 +67,6 @@ const mapStateToProps = createStructuredSelector({
 
 export default withRouter(connect(mapStateToProps)(CartDropdown));
 //withRouter is HOC, it returns a component and takes a component as an argument(component that got returned from connect call)
-//withRouter will be what passes the match, history and location objects into a component that being wrapped.
+//withRouter will be what passes the match, history and location objects into a component that being wrapped(CartDropdown)
 //so we want a component that comes out of connect call receive match,history and location as props
 

@@ -30,7 +30,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
                     cartItems: removeItemFromCart(state.cartItems, action.payload)
                 }
         default:
-            return state; //if nothing matchs, return current state,because we dont want component to rerand
+            return state; //if nothing matchs, return current state,because we dont want component to rerender
     }
 }
 

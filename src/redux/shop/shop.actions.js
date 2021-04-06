@@ -41,6 +41,10 @@ export const fetchCollectionsStartAsync = () => {
 //redux-thunk does not care about action-objects, instead it only catches what returns a function(ex. fetchCollectionsStartAsync)
 //when the redux-thunk sees the function, it provides it with dispatch functionality as a parameter. Thats it!
 
+//MIDDLEWARES CATCHES ACTION BEFORE IT HITS THE REDUCER OR THROW THE ACTION AWAY SO IT NEVER HITS THE REDUCER
+
+//THUNK explanation lecture 192- 4 min
+
 
 
 

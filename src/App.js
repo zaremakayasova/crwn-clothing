@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -14,41 +14,26 @@ import ContactPage from "./pages/contact/contact.component";
 
 import { checkUserSession } from "./redux/user/user.actions";
 
-//we want to store the state of our user in our app, so then the user logs in
-//whether google sign in or email and password, we want to store that state on the app state
-//so we can pass it into components that need it, because we want to access our current user object through our app
-//so we convert our App to a class component
 import { selectCurrentUser } from "./redux/user/user.selectors";
 
-class App extends React.Component {
-  unsubscribeFromAuth = null;
-
-  componentDidMount() {
-    const { checkUserSession } = this.props;
+const App = ({ checkUserSession, currentUser }) => {
+  useEffect(() => {
     checkUserSession();
-  }
+  }, [checkUserSession]); // we pass an empty erray if we want to run it only once when it mounts
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-
-
-  render() {
-
-    return (
-      <div>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/shop" component={ShopPage} />
-          <Route exact path="/checkout" component={CheckoutPage} />
-          <Route exact path="/signin" render={() => this.props.currentUser ? (<Redirect to="/" />) : (<SignInAndSignUpPage />)} />
-          <Route exact path="/contact" component={ContactPage} />
-        </Switch>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Header />
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/shop" component={ShopPage} />
+        <Route exact path="/checkout" component={CheckoutPage} />
+        <Route exact path="/signin" render={() => currentUser ? (<Redirect to="/" />) : (<SignInAndSignUpPage />)} />
+        <Route exact path="/contact" component={ContactPage} />
+      </Switch>
+    </div>
+  );
+};
 
 const mapStateToProps = createStructuredSelector({ //so we have access to this.props.currentUser
   currentUser: selectCurrentUser

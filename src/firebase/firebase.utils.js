@@ -30,15 +30,13 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         email,
         createdAt,
         ...additionalData
-      })
+      });
     } catch (error) {
       console.log("error creating user", error.message);
     }
   }
-  return userRef; //maybe we will have to do use it later
+  return userRef;
 }
-//^this function allows us to take that user auth object that we got back
-//from auth library and then store inside the database
 
 export const addCollectionAndDocuments = async (collectionKey, objectToAdd) => {
   const collectionRef = firestore.collection(collectionKey);
@@ -81,7 +79,6 @@ export const getCurrentUser = () => {
     }, reject)
   })
 };
-
 
 firebase.initializeApp(config);
 

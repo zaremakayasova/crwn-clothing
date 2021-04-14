@@ -13,7 +13,7 @@ import {
 
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
     try {
-        const userRef = yield call(createUserProfileDocument, userAuth, additionalData); // or createUserProfileDocument(user);
+        const userRef = yield call(createUserProfileDocument, userAuth, additionalData); // or createUserProfileDocument(userAuth, additionalData);
         const userSnapshot = yield userRef.get();
         yield put(signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
     }
@@ -21,7 +21,7 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
     catch (error) {
         yield put(signInFailure(error));
     }
-}
+};
 
 export function* signInWithGoogle() {
     try {
@@ -43,11 +43,11 @@ export function* signInWithEmail({ payload: { email, password } }) { //payload w
 };
 
 export function* onGoogleSignInStart() {
-    yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle)
+    yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
 };
 
 export function* emailSignInStart() {
-    yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START, signInWithEmail)
+    yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START, signInWithEmail);
 };
 
 export function* isUserAuthenticated() {
@@ -62,7 +62,7 @@ export function* isUserAuthenticated() {
 };
 
 export function* onCheckUserSession() {
-    yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated)
+    yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
 };
 
 export function* signOut() {
@@ -76,7 +76,7 @@ export function* signOut() {
 };
 
 export function* onSignOutStart() {
-    yield takeLatest(UserActionTypes.SIGN_OUT_START, signOut)
+    yield takeLatest(UserActionTypes.SIGN_OUT_START, signOut);
 };
 
 export function* signUp({ payload: { email, password, displayName } }) {

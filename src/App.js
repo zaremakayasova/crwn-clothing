@@ -19,7 +19,9 @@ import { selectCurrentUser } from "./redux/user/user.selectors";
 const App = ({ checkUserSession, currentUser }) => {
   useEffect(() => {
     checkUserSession();
-  }, [checkUserSession]); // we pass an empty erray if we want to run it only once when it mounts
+  }, [checkUserSession]); // we pass an empty erray if we want to run it only once when it mounts, on initialization
+                          // if we pass array with value(like checkUserSession), it means that we want useEffect gets called when these values changes
+                          // if we want useEffect be called everytime our component gets called or rerenders, we dont pass anything as the second parameter, we pass no array
 
   return (
     <div>

@@ -5,7 +5,6 @@ import "./collection.styles.scss";
 import { selectCollection } from "../../redux/shop/shop.selectors";
 
 import CollectionItem from "../../components/collection-item/collection-item.component";
-import { firestore } from "../../firebase/firebase.utils";
 
 const CollectionPage = ({ collection }) => {
     // useEffect(() => {

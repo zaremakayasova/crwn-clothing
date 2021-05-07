@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import './App.css';
+import { GlobalStyle } from './global.styles';
 
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
@@ -20,11 +20,12 @@ const App = ({ checkUserSession, currentUser }) => {
   useEffect(() => {
     checkUserSession();
   }, [checkUserSession]); // we pass an empty erray if we want to run it only once when it mounts, on initialization
-                          // if we pass array with value(like checkUserSession), it means that we want useEffect gets called when these values changes
-                          // if we want useEffect be called everytime our component gets called or rerenders, we dont pass anything as the second parameter, we pass no array
+  // if we pass array with value(like checkUserSession), it means that we want useEffect gets called when these values changes
+  // if we want useEffect be called everytime our component gets called or rerenders, we dont pass anything as the second parameter, we pass no array
 
   return (
     <div>
+      <GlobalStyle />
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
@@ -53,3 +54,6 @@ export default connect(mapStateToProps,
 //The first function call takes the arguments you passed in and returns a higher-order component (a function that takes in a component and returns another):
 //Next, we are "wrapping" the App component, providing it with all the pieces of the data it needs from the store, and the functions it can use to dispatch actions to the store.
 //So, the 2nd call returns a new "connected"/container App component that is connected to the Redux store with all the props/actions injected into it. And that is what gets exported.
+
+
+

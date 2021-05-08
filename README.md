@@ -40,6 +40,10 @@ The application is hosted on heroku and can be accessed at the following web add
 - React.js(Front-End)
 - Node.js (Back-end)
 - Redux and Redux Saga(State Management)
+- React Hooks
+- Redux Reselect
+- Redux Persist
+- React Router DOM
 - SASS and Styled Components (Styling)
 - Firebase (Database)
 - Stripe API (Payment)
@@ -52,3 +56,9 @@ The application is hosted on heroku and can be accessed at the following web add
 - Payments with Stripe(testing mode)
 - Bring/update data asynchronously 
 - Responsive design
+
+## Run Locally:
+
+- Clone the repo
+- run 'npm install'
+- run 'npm start'

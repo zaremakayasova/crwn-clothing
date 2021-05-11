@@ -38,7 +38,6 @@ The application is hosted on heroku and can be accessed at the following web add
 ## Technologies Used:
 
 - React.js(Front-End)
-- Node.js (Back-end)
 - Redux and Redux Saga(State Management)
 - React Hooks
 - Redux Reselect
@@ -47,6 +46,7 @@ The application is hosted on heroku and can be accessed at the following web add
 - SASS and Styled Components (Styling)
 - Firebase (Database)
 - Stripe API (Payment)
+- Performance Optimization with React lazy, suspense and memo
 
 ## Features:
 

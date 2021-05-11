@@ -1,6 +1,6 @@
 # CROWN Clothing
 
-E-Commerce App built with React, using Firebase and Stripe API, deployed with Heroku
+E-Commerce App built with React, using Redux, Redux Saga, React Hooks, Firebase and Stripe API, deployed with Heroku
 
 ## Live Demo
 
